@@ -1,26 +1,32 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Base/Background */
+  --color-base: 249 250 251; /* #F9FAFB */
+  --color-base-content: 107 114 128; /* #6B7280 */
+  
+  /* Primary */
+  --color-primary: 45 212 191; /* #2DD4BF - Teal */
+  --color-primary-content: 255 255 255; /* #FFFFFF */
+  
+  /* Focus ring color */
+  --focus-ring-color: rgba(45, 212, 191, 0.5);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+::-webkit-scrollbar-track {
+  background: rgb(var(--color-base));
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--color-base-content), 0.2);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--color-base-content), 0.3);
 }
