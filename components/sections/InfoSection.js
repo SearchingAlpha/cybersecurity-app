@@ -1,52 +1,57 @@
 // components/sections/InfoSection.jsx
-import Image from 'next/image';
 import CardFeature from '@/components/ui/CardFeature';
 
 export default function InfoSection() {
   return (
-    <section className="bg-base py-20">
-      <div className="container mx-auto max-w-6xl px-4">
+    <section className="relative bg-white py-20 overflow-hidden">
+      {/* Geometric Background Elements - MORE VISIBLE */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        {/* Grid pattern - MORE VISIBLE */}
+        <div className="absolute inset-0" style={{ 
+          backgroundImage: 'radial-gradient(#2DD4BF20 1px, transparent 1px)', 
+          backgroundSize: '40px 40px' 
+        }}></div>
+        
+        {/* Large decorative blocks - MORE VISIBLE */}
+        <div className="absolute top-40 -left-20 h-60 w-60 bg-[#2DD4BF]/10" style={{ transform: 'rotate(15deg)' }}></div>
+        <div className="absolute -bottom-20 right-20 h-80 w-80 border-8 border-[#2DD4BF]/10"></div>
+        
+        {/* Small accent shapes - MORE VISIBLE */}
+        <div className="absolute top-20 right-40 h-16 w-16 bg-[#2DD4BF]/15"></div>
+        <div className="absolute bottom-40 left-1/4 h-10 w-10 bg-[#2DD4BF]/15" style={{ transform: 'rotate(45deg)' }}></div>
+      </div>
+      
+      <div className="container relative z-10 mx-auto max-w-6xl px-4">
         <div className="mb-16 text-center">
-          <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl">Why Choose VibeSafe?</h2>
-          <p className="mx-auto max-w-2xl text-base-content/70">
-            Get comfortable, secure, and use your code without worrying about security vulnerabilities.
+          <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl">ONLINE SECURITY</h2>
+          <p className="mx-auto max-w-2xl text-[#6B7280]">
+            Get comfortable, secure, and use the internet without worrying.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          <CardFeature
-            icon={<ShieldLockIcon className="h-8 w-8 text-primary" />}
-            title="Protection"
-            description="Safe, more comfortable, and easier to use. Threat detection starts working before it is overlooked."
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+          {/* Feature Cards with properly positioned accents */}
+          <FeatureCard
+            icon={<ShieldLockIcon className="h-6 w-6 text-white" />}
+            title="PROTECTION"
+            description="Safe, More Comfortable, and Easier to Use. Threat detection starts working before it is downloaded."
           />
           
-          <CardFeature
-            icon={<CodeIcon className="h-8 w-8 text-primary" />}
-            title="No Coding Required"
-            description="Use the security testing without unnecessary hassle around downloading malware."
+          <FeatureCard
+            icon={<ShieldIcon className="h-6 w-6 text-white" />}
+            title="USE THE INTERNET WITHOUT UNNECESSARY HASSLE"
+            description="Avoid downloading malware. Securely exchange data synchronizes them effortlessly and forget about the alarm."
           />
           
-          <CardFeature
-            icon={<SyncIcon className="h-8 w-8 text-primary" />}
-            title="Security Exchange"
-            description="Security exchanges data synchronizes them effortlessly and forget about the alarm."
-          />
-          
-          <CardFeature
-            icon={<DevicesIcon className="h-8 w-8 text-primary" />}
-            title="All Platforms"
+          <FeatureCard
+            icon={<DevicesIcon className="h-6 w-6 text-white" />}
+            title="ALL YOUR DEVICES"
             description="All your devices are within one dashboard, making it easy to run from anywhere and anytime."
           />
           
-          <CardFeature
-            icon={<ClockIcon className="h-8 w-8 text-primary" />}
-            title="24/7 Protection"
-            description="Continuous monitoring of your applications with real-time alerts for any detected vulnerabilities."
-          />
-          
-          <CardFeature
-            icon={<ChartIcon className="h-8 w-8 text-primary" />}
-            title="Insights"
+          <FeatureCard
+            icon={<ChartIcon className="h-6 w-6 text-white" />}
+            title="INSIGHTS"
             description="Insights that make our trusted agency partners swiftly respond to threats."
           />
         </div>
@@ -55,7 +60,31 @@ export default function InfoSection() {
   );
 }
 
-// Info Section Subcomponents
+// Feature Card component with properly positioned corner accents
+function FeatureCard({ icon, title, description }) {
+  return (
+    <div className="relative rounded-none border border-gray-100 bg-white p-6 shadow-sm">
+      <div className="relative mb-3 flex h-10 w-10 items-center justify-center rounded-none bg-[#2DD4BF]">
+        {icon}
+        {/* Properly positioned corner accents for icon */}
+        <div className="absolute -top-1 -left-1 h-2 w-2 border-t border-l border-white"></div>
+        <div className="absolute -top-1 -right-1 h-2 w-2 border-t border-r border-white"></div>
+        <div className="absolute -bottom-1 -left-1 h-2 w-2 border-b border-l border-white"></div>
+        <div className="absolute -bottom-1 -right-1 h-2 w-2 border-b border-r border-white"></div>
+      </div>
+      <h3 className="mb-2 text-lg font-bold">{title}</h3>
+      <p className="text-[#6B7280]">{description}</p>
+      
+      {/* Properly positioned corner accents for card */}
+      <div className="absolute -top-1 -left-1 h-4 w-4 border-t-2 border-l-2 border-[#2DD4BF]"></div>
+      <div className="absolute -top-1 -right-1 h-4 w-4 border-t-2 border-r-2 border-[#2DD4BF]"></div>
+      <div className="absolute -bottom-1 -left-1 h-4 w-4 border-b-2 border-l-2 border-[#2DD4BF]"></div>
+      <div className="absolute -bottom-1 -right-1 h-4 w-4 border-b-2 border-r-2 border-[#2DD4BF]"></div>
+    </div>
+  );
+}
+
+// Info Section Icons
 function ShieldLockIcon({ className }) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -64,18 +93,10 @@ function ShieldLockIcon({ className }) {
   );
 }
 
-function CodeIcon({ className }) {
+function ShieldIcon({ className }) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
-      <path fillRule="evenodd" d="M14.447 3.027a.75.75 0 01.527.92l-4.5 16.5a.75.75 0 01-1.448-.394l4.5-16.5a.75.75 0 01.921-.526zM16.72 6.22a.75.75 0 011.06 0l5.25 5.25a.75.75 0 010 1.06l-5.25 5.25a.75.75 0 11-1.06-1.06L21.44 12l-4.72-4.72a.75.75 0 010-1.06zm-9.44 0a.75.75 0 010 1.06L2.56 12l4.72 4.72a.75.75 0 11-1.06 1.06L.97 12.53a.75.75 0 010-1.06l5.25-5.25a.75.75 0 011.06 0z" clipRule="evenodd" />
-    </svg>
-  );
-}
-
-function SyncIcon({ className }) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
-      <path fillRule="evenodd" d="M4.755 10.059a7.5 7.5 0 0112.548-3.364l1.903 1.903h-3.183a.75.75 0 100 1.5h4.992a.75.75 0 00.75-.75V4.356a.75.75 0 00-1.5 0v3.18l-1.9-1.9A9 9 0 003.306 9.67a.75.75 0 101.45.388zm15.408 3.352a.75.75 0 00-.919.53 7.5 7.5 0 01-12.548 3.364l-1.902-1.903h3.183a.75.75 0 000-1.5H2.984a.75.75 0 00-.75.75v4.992a.75.75 0 001.5 0v-3.18l1.9 1.9a9 9 0 0015.059-4.035.75.75 0 00-.53-.918z" clipRule="evenodd" />
+      <path fillRule="evenodd" d="M12.516 2.17a.75.75 0 00-1.032 0 11.209 11.209 0 01-7.877 3.08.75.75 0 00-.722.515A12.74 12.74 0 002.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.75.75 0 00.674 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 00-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08zm3.094 8.016a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" />
     </svg>
   );
 }
@@ -85,14 +106,6 @@ function DevicesIcon({ className }) {
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
       <path d="M10.5 18.75a.75.75 0 000 1.5h3a.75.75 0 000-1.5h-3z" />
       <path fillRule="evenodd" d="M8.625.75A3.375 3.375 0 005.25 4.125v15.75a3.375 3.375 0 003.375 3.375h6.75a3.375 3.375 0 003.375-3.375V4.125A3.375 3.375 0 0015.375.75h-6.75zM7.5 4.125C7.5 3.504 8.004 3 8.625 3H9.75v.375c0 .621.504 1.125 1.125 1.125h2.25c.621 0 1.125-.504 1.125-1.125V3h1.125c.621 0 1.125.504 1.125 1.125v15.75c0 .621-.504 1.125-1.125 1.125h-6.75A1.125 1.125 0 017.5 19.875V4.125z" clipRule="evenodd" />
-    </svg>
-  );
-}
-
-function ClockIcon({ className }) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
-      <path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clipRule="evenodd" />
     </svg>
   );
 }

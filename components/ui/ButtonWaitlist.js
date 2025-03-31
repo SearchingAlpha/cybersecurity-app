@@ -35,45 +35,62 @@ export default function ButtonWaitlist() {
       {!isExpanded ? (
         <button
           onClick={() => setIsExpanded(true)}
-          className="flex h-12 items-center justify-center rounded-lg bg-primary px-6 text-primary-content transition-all hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          className="relative flex h-12 items-center justify-center rounded-none bg-[#2DD4BF] px-6 text-white transition-all hover:bg-[#2DD4BF]/90 focus:outline-none"
         >
-          <span className="mr-2 text-sm font-medium">Join the waitlist</span>
+          <span className="mr-2 text-sm font-medium">Improve your online security with a leading VPN service</span>
           <ArrowRightIcon className="h-4 w-4" />
+          <div className="absolute -top-1 -left-1 h-2 w-2 border-t border-l border-white"></div>
+          <div className="absolute -top-1 -right-1 h-2 w-2 border-t border-r border-white"></div>
+          <div className="absolute -bottom-1 -left-1 h-2 w-2 border-b border-l border-white"></div>
+          <div className="absolute -bottom-1 -right-1 h-2 w-2 border-b border-r border-white"></div>
         </button>
       ) : (
         <form onSubmit={handleSubmit} className="flex w-full max-w-md flex-col sm:flex-row">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
-            disabled={isSubmitting || isSuccess}
-            className="mb-2 h-12 flex-1 rounded-lg border border-base-content/20 bg-base px-4 text-base-content focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary sm:mb-0 sm:mr-2"
-            required
-          />
-          <button
-            type="submit"
-            disabled={isSubmitting || isSuccess}
-            className={`h-12 rounded-lg px-6 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-              isSuccess
-                ? 'bg-green-500 text-white'
-                : 'bg-primary text-primary-content hover:bg-primary/90 focus:ring-primary'
-            }`}
-          >
-            {isSubmitting ? (
-              <span className="flex items-center justify-center">
-                <LoadingSpinner className="mr-2 h-4 w-4 animate-spin" />
-                Submitting...
-              </span>
-            ) : isSuccess ? (
-              <span className="flex items-center justify-center">
-                <CheckIcon className="mr-2 h-4 w-4" />
-                Joined!
-              </span>
-            ) : (
-              'Join Now'
-            )}
-          </button>
+          <div className="relative mb-2 flex-1 sm:mb-0 sm:mr-2">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              disabled={isSubmitting || isSuccess}
+              className="h-12 w-full rounded-none border border-gray-200 bg-white px-4 text-[#6B7280] focus:border-[#2DD4BF] focus:outline-none"
+              required
+            />
+            <div className="absolute -top-1 -left-1 h-2 w-2 border-t border-l border-[#2DD4BF]"></div>
+            <div className="absolute -top-1 -right-1 h-2 w-2 border-t border-r border-[#2DD4BF]"></div>
+            <div className="absolute -bottom-1 -left-1 h-2 w-2 border-b border-l border-[#2DD4BF]"></div>
+            <div className="absolute -bottom-1 -right-1 h-2 w-2 border-b border-r border-[#2DD4BF]"></div>
+          </div>
+          
+          <div className="relative">
+            <button
+              type="submit"
+              disabled={isSubmitting || isSuccess}
+              className={`relative h-12 rounded-none px-6 text-sm font-medium transition-all focus:outline-none ${
+                isSuccess
+                  ? 'bg-green-500 text-white'
+                  : 'bg-[#2DD4BF] text-white hover:bg-[#2DD4BF]/90'
+              }`}
+            >
+              {isSubmitting ? (
+                <span className="flex items-center justify-center">
+                  <LoadingSpinner className="mr-2 h-4 w-4" />
+                  <span>Submitting...</span>
+                </span>
+              ) : isSuccess ? (
+                <span className="flex items-center justify-center">
+                  <CheckIcon className="mr-2 h-4 w-4" />
+                  <span>Joined!</span>
+                </span>
+              ) : (
+                'Get started'
+              )}
+              <div className="absolute -top-1 -left-1 h-2 w-2 border-t border-l border-white"></div>
+              <div className="absolute -top-1 -right-1 h-2 w-2 border-t border-r border-white"></div>
+              <div className="absolute -bottom-1 -left-1 h-2 w-2 border-b border-l border-white"></div>
+              <div className="absolute -bottom-1 -right-1 h-2 w-2 border-b border-r border-white"></div>
+            </button>
+          </div>
         </form>
       )}
     </div>

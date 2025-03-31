@@ -20,37 +20,46 @@ export default function Header() {
     <header
       className={`fixed top-0 z-50 w-full transition-all duration-300 ${
         isScrolled
-          ? 'bg-base shadow-md py-2'
+          ? 'bg-white shadow-sm py-2'
           : 'bg-transparent py-4'
       }`}
     >
-      <div className="container mx-auto flex max-w-6xl items-center justify-between px-4">
-        <Link href="/" className="flex items-center">
-          <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-md bg-primary">
-            <ShieldIcon className="h-5 w-5 text-primary-content" />
-          </div>
-          <span className="text-lg font-bold">VibeSafe</span>
-        </Link>
-
-        <nav className="hidden space-x-1 md:flex">
-          <NavLink href="/" isActive>Home</NavLink>
-          <NavLink href="#features">Features</NavLink>
-          <NavLink href="#pricing">Pricing</NavLink>
-          <NavLink href="#support">Support</NavLink>
-        </nav>
-
-        <div className="flex items-center space-x-4">
-          <Link
-            href="#waitlist"
-            className="hidden rounded-lg bg-primary px-5 py-2 text-sm font-medium text-primary-content transition-all hover:bg-primary/90 md:block"
-          >
-            Get Early Access
+      <div className="container mx-auto max-w-6xl px-4">
+        <div className="flex items-center justify-between">
+          <Link href="/" className="flex items-center">
+            <div className="relative mr-2 flex h-8 w-8 items-center justify-center bg-[#2DD4BF]">
+              <ShieldIcon className="h-5 w-5 text-white" />
+              <div className="absolute -top-0.5 -left-0.5 h-2 w-2 border-t border-l border-white"></div>
+              <div className="absolute -top-0.5 -right-0.5 h-2 w-2 border-t border-r border-white"></div>
+              <div className="absolute -bottom-0.5 -left-0.5 h-2 w-2 border-b border-l border-white"></div>
+              <div className="absolute -bottom-0.5 -right-0.5 h-2 w-2 border-b border-r border-white"></div>
+            </div>
+            <span className="text-lg font-bold">VibeSafe</span>
           </Link>
 
-          {/* Mobile menu button */}
-          <button className="flex h-10 w-10 items-center justify-center rounded-lg hover:bg-base-content/5 md:hidden">
-            <MenuIcon className="h-6 w-6" />
-          </button>
+          <nav className="hidden space-x-6 md:flex">
+            <NavLink href="/" isActive>Home</NavLink>
+            <NavLink href="#features">Features</NavLink>
+            <NavLink href="#support">Support</NavLink>
+          </nav>
+
+          <div className="flex items-center space-x-4">
+            <Link
+              href="#waitlist"
+              className="relative hidden rounded-none bg-[#2DD4BF] px-5 py-2 text-sm font-medium text-white transition-all hover:bg-[#2DD4BF]/90 md:block"
+            >
+              Get VPN
+              <div className="absolute -top-0.5 -left-0.5 h-1.5 w-1.5 border-t border-l border-white"></div>
+              <div className="absolute -top-0.5 -right-0.5 h-1.5 w-1.5 border-t border-r border-white"></div>
+              <div className="absolute -bottom-0.5 -left-0.5 h-1.5 w-1.5 border-b border-l border-white"></div>
+              <div className="absolute -bottom-0.5 -right-0.5 h-1.5 w-1.5 border-b border-r border-white"></div>
+            </Link>
+
+            {/* Mobile menu button */}
+            <button className="flex h-10 w-10 items-center justify-center rounded-none border border-gray-200 hover:border-[#2DD4BF] md:hidden">
+              <MenuIcon className="h-5 w-5" />
+            </button>
+          </div>
         </div>
       </div>
     </header>
@@ -62,8 +71,8 @@ function NavLink({ href, children, isActive }) {
   return (
     <Link
       href={href}
-      className={`rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-base-content/5 ${
-        isActive ? 'text-primary' : 'text-base-content/80'
+      className={`text-sm font-medium transition-all hover:text-[#2DD4BF] ${
+        isActive ? 'text-[#2DD4BF]' : 'text-[#6B7280]'
       }`}
     >
       {children}

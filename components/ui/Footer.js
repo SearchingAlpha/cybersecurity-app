@@ -3,18 +3,37 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="border-t border-base-content/10 bg-base py-12">
-      <div className="container mx-auto max-w-6xl px-4">
+    <footer className="relative border-t border-gray-100 bg-white py-12 overflow-hidden">
+      {/* Geometric Background Elements */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        {/* Grid pattern */}
+        <div className="absolute inset-0" style={{ 
+          backgroundImage: 'linear-gradient(to right, #2DD4BF08 1px, transparent 1px), linear-gradient(to bottom, #2DD4BF08 1px, transparent 1px)', 
+          backgroundSize: '50px 50px' 
+        }}></div>
+        
+        {/* Decorative elements */}
+        <div className="absolute top-0 left-1/3 w-1/3 h-px bg-[#2DD4BF]/20"></div>
+        <div className="absolute bottom-0 right-1/3 w-1/3 h-px bg-[#2DD4BF]/20"></div>
+        <div className="absolute -bottom-20 -left-20 h-40 w-40 border-8 border-[#2DD4BF]/5"></div>
+        <div className="absolute top-10 right-10 h-20 w-20 bg-[#2DD4BF]/5" style={{ transform: 'rotate(45deg)' }}></div>
+      </div>
+      
+      <div className="container relative z-10 mx-auto max-w-6xl px-4">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           {/* Company Info */}
           <div>
             <div className="mb-4 flex items-center">
-              <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-md bg-primary">
-                <ShieldIcon className="h-5 w-5 text-primary-content" />
+              <div className="relative mr-2 flex h-8 w-8 items-center justify-center bg-[#2DD4BF]">
+                <ShieldIcon className="h-5 w-5 text-white" />
+                <div className="absolute -top-0.5 -left-0.5 h-2 w-2 border-t border-l border-white"></div>
+                <div className="absolute -top-0.5 -right-0.5 h-2 w-2 border-t border-r border-white"></div>
+                <div className="absolute -bottom-0.5 -left-0.5 h-2 w-2 border-b border-l border-white"></div>
+                <div className="absolute -bottom-0.5 -right-0.5 h-2 w-2 border-b border-r border-white"></div>
               </div>
               <span className="text-lg font-bold">VibeSafe</span>
             </div>
-            <p className="mb-4 text-base-content/70">
+            <p className="mb-4 text-[#6B7280]">
               Security testing for solo developers and small startups. No coding experience required.
             </p>
             <div className="flex space-x-4">
@@ -26,7 +45,7 @@ export default function Footer() {
           
           {/* Quick Links */}
           <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider">Quick Links</h3>
+            <h3 className="mb-4 text-sm font-bold uppercase">Quick Links</h3>
             <ul className="space-y-2">
               <FooterLink href="#features">Features</FooterLink>
               <FooterLink href="#pricing">Pricing</FooterLink>
@@ -37,7 +56,7 @@ export default function Footer() {
           
           {/* Legal */}
           <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider">Legal</h3>
+            <h3 className="mb-4 text-sm font-bold uppercase">Legal</h3>
             <ul className="space-y-2">
               <FooterLink href="#privacy">Privacy Policy</FooterLink>
               <FooterLink href="#terms">Terms of Service</FooterLink>
@@ -48,31 +67,43 @@ export default function Footer() {
           
           {/* Newsletter */}
           <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider">Stay Updated</h3>
-            <p className="mb-4 text-base-content/70">
+            <h3 className="mb-4 text-sm font-bold uppercase">Stay Updated</h3>
+            <p className="mb-4 text-[#6B7280]">
               Subscribe to our newsletter for updates on new features and security tips.
             </p>
             <div className="flex">
-              <input
-                type="email"
-                placeholder="Your email"
-                className="w-full rounded-l-lg border border-base-content/20 bg-base px-4 py-2 text-base-content focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-              />
-              <button className="rounded-r-lg bg-primary px-4 py-2 text-primary-content">
-                <ArrowRightIcon className="h-5 w-5" />
-              </button>
+              <div className="relative flex-1">
+                <input
+                  type="email"
+                  placeholder="Your email"
+                  className="w-full rounded-none border border-gray-200 bg-white px-4 py-2 text-[#6B7280] focus:border-[#2DD4BF] focus:outline-none"
+                />
+                <div className="absolute -top-0.5 -left-0.5 h-2 w-2 border-t border-l border-[#2DD4BF]"></div>
+                <div className="absolute -top-0.5 -right-0.5 h-2 w-2 border-t border-r border-[#2DD4BF]"></div>
+                <div className="absolute -bottom-0.5 -left-0.5 h-2 w-2 border-b border-l border-[#2DD4BF]"></div>
+                <div className="absolute -bottom-0.5 -right-0.5 h-2 w-2 border-b border-r border-[#2DD4BF]"></div>
+              </div>
+              <div className="relative">
+                <button className="relative rounded-none bg-[#2DD4BF] px-4 py-2 text-white">
+                  <ArrowRightIcon className="h-5 w-5" />
+                  <div className="absolute -top-0.5 -left-0.5 h-2 w-2 border-t border-l border-white"></div>
+                  <div className="absolute -top-0.5 -right-0.5 h-2 w-2 border-t border-r border-white"></div>
+                  <div className="absolute -bottom-0.5 -left-0.5 h-2 w-2 border-b border-l border-white"></div>
+                  <div className="absolute -bottom-0.5 -right-0.5 h-2 w-2 border-b border-r border-white"></div>
+                </button>
+              </div>
             </div>
           </div>
         </div>
         
         {/* Bottom Footer */}
-        <div className="mt-12 border-t border-base-content/10 pt-8">
-          <div className="flex flex-col items-center justify-between space-y-4 text-base-content/70 md:flex-row md:space-y-0">
+        <div className="relative mt-12 border-t border-gray-100 pt-8">
+          <div className="flex flex-col items-center justify-between space-y-4 text-[#6B7280] md:flex-row md:space-y-0">
             <p>© {new Date().getFullYear()} VibeSafe. All rights reserved.</p>
             <div className="flex space-x-6">
-              <Link href="#privacy" className="hover:text-primary">Privacy</Link>
-              <Link href="#terms" className="hover:text-primary">Terms</Link>
-              <Link href="#sitemap" className="hover:text-primary">Sitemap</Link>
+              <Link href="#privacy" className="hover:text-[#2DD4BF]">Privacy</Link>
+              <Link href="#terms" className="hover:text-[#2DD4BF]">Terms</Link>
+              <Link href="#sitemap" className="hover:text-[#2DD4BF]">Sitemap</Link>
             </div>
           </div>
         </div>
@@ -85,7 +116,7 @@ export default function Footer() {
 function FooterLink({ href, children }) {
   return (
     <li>
-      <Link href={href} className="text-base-content/70 hover:text-primary">
+      <Link href={href} className="text-[#6B7280] hover:text-[#2DD4BF]">
         {children}
       </Link>
     </li>
@@ -96,9 +127,13 @@ function SocialLink({ href, icon }) {
   return (
     <Link
       href={href}
-      className="flex h-8 w-8 items-center justify-center rounded-full bg-base-content/10 text-base-content/70 hover:bg-primary hover:text-primary-content"
+      className="relative flex h-8 w-8 items-center justify-center border border-gray-200 text-[#6B7280] hover:border-[#2DD4BF] hover:text-[#2DD4BF]"
     >
       {icon}
+      <div className="absolute -top-0.5 -left-0.5 h-1.5 w-1.5 border-t border-l border-[#2DD4BF]"></div>
+      <div className="absolute -top-0.5 -right-0.5 h-1.5 w-1.5 border-t border-r border-[#2DD4BF]"></div>
+      <div className="absolute -bottom-0.5 -left-0.5 h-1.5 w-1.5 border-b border-l border-[#2DD4BF]"></div>
+      <div className="absolute -bottom-0.5 -right-0.5 h-1.5 w-1.5 border-b border-r border-[#2DD4BF]"></div>
     </Link>
   );
 }
