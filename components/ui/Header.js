@@ -38,17 +38,18 @@ export default function Header() {
           </Link>
 
           <nav className="hidden space-x-6 md:flex">
-            <NavLink href="/" isActive>Home</NavLink>
+            <NavLink href="/" isActive={false}>Home</NavLink>
+            <NavLink href="/scan/xss" isActive={false}>XSS Scanner</NavLink>
             <NavLink href="#features">Features</NavLink>
             <NavLink href="#support">Support</NavLink>
           </nav>
 
           <div className="flex items-center space-x-4">
             <Link
-              href="#waitlist"
+              href="/scan/xss"
               className="relative hidden rounded-none bg-[#2DD4BF] px-5 py-2 text-sm font-medium text-white transition-all hover:bg-[#2DD4BF]/90 md:block"
             >
-              Get VPN
+              Security Scan
               <div className="absolute -top-0.5 -left-0.5 h-1.5 w-1.5 border-t border-l border-white"></div>
               <div className="absolute -top-0.5 -right-0.5 h-1.5 w-1.5 border-t border-r border-white"></div>
               <div className="absolute -bottom-0.5 -left-0.5 h-1.5 w-1.5 border-b border-l border-white"></div>
