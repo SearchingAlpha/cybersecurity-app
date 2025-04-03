@@ -1,5 +1,6 @@
 // components/sections/InfoSection.jsx
 import CardFeature from '@/components/ui/CardFeature';
+import ButtonWaitlist from '@/components/ui/ButtonWaitlist';
 
 export default function InfoSection() {
   return (
@@ -23,37 +24,76 @@ export default function InfoSection() {
       
       <div className="container relative z-10 mx-auto max-w-6xl px-4">
         <div className="mb-16 text-center">
-          <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl">ONLINE SECURITY</h2>
+          <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl">WHY YOU'LL LOVE IT</h2>
           <p className="mx-auto max-w-2xl text-[#6B7280]">
             Get comfortable, secure, and use the internet without worrying.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {/* Feature Cards with properly positioned accents */}
           <FeatureCard
             icon={<ShieldLockIcon className="h-6 w-6 text-white" />}
-            title="PROTECTION"
-            description="Safe, More Comfortable, and Easier to Use. Threat detection starts working before it is downloaded."
+            title="NO-TECHIE FILTER"
+            description="Designed for creators, not coders. Test your app with a single click."
           />
           
           <FeatureCard
             icon={<ShieldIcon className="h-6 w-6 text-white" />}
-            title="USE THE INTERNET WITHOUT UNNECESSARY HASSLE"
-            description="Avoid downloading malware. Securely exchange data synchronizes them effortlessly and forget about the alarm."
+            title="EXHAUSTIVE REPORTS"
+            description="Get crystal-clear, step-by-step guides to lock down your app."
           />
           
           <FeatureCard
-            icon={<DevicesIcon className="h-6 w-6 text-white" />}
-            title="ALL YOUR DEVICES"
-            description="All your devices are within one dashboard, making it easy to run from anywhere and anytime."
+            icon={<DesignIcon className="h-6 w-6 text-white" />}
+            title="MINIMAL VIBES, MAXIMUM EDGE"
+            description="Sleek design meets standout security—because your app deserves both."
+          />
+        </div>
+
+        <div className="mt-20 mb-16 text-center">
+          <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl">HOW IT WORKS</h2>
+        </div>
+        
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          <FeatureCard
+            icon={<ScanIcon className="h-6 w-6 text-white" />}
+            title="SCAN"
+            description="Upload your app or connect it in seconds."
           />
           
           <FeatureCard
-            icon={<ChartIcon className="h-6 w-6 text-white" />}
-            title="INSIGHTS"
-            description="Insights that make our trusted agency partners swiftly respond to threats."
+            icon={<AnalyzeIcon className="h-6 w-6 text-white" />}
+            title="ANALYZE"
+            description="We dig deep to uncover every weak spot."
           />
+          
+          <FeatureCard
+            icon={<StrengthIcon className="h-6 w-6 text-white" />}
+            title="STRENGTHEN"
+            description="Follow our no-jargon fixes to bulletproof your creation."
+          />
+        </div>
+
+        <div className="mt-20 text-center">
+          <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl">STAND OUT, STAY SAFE</h2>
+          <p className="mx-auto max-w-2xl text-[#6B7280] mb-10">
+            Your app's unique. Its security should be too. With VibeSafe, you're not just building—you're building smart. Ready to test your app like a pro?
+          </p>
+          
+          <div className="flex flex-col sm:flex-row justify-center gap-6">
+            <div className="mb-8">
+              <ButtonWaitlist />
+            </div>
+            
+            <button className="relative flex h-12 items-center justify-center rounded-none border-2 border-[#2DD4BF] px-6 text-[#2DD4BF] transition-all hover:bg-[#2DD4BF]/10 focus:outline-none">
+              <span className="text-sm font-medium">See a Sample Report</span>
+              <div className="absolute -top-1 -left-1 h-2 w-2 border-t border-l border-[#2DD4BF]"></div>
+              <div className="absolute -top-1 -right-1 h-2 w-2 border-t border-r border-[#2DD4BF]"></div>
+              <div className="absolute -bottom-1 -left-1 h-2 w-2 border-b border-l border-[#2DD4BF]"></div>
+              <div className="absolute -bottom-1 -right-1 h-2 w-2 border-b border-r border-[#2DD4BF]"></div>
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -101,20 +141,34 @@ function ShieldIcon({ className }) {
   );
 }
 
-function DevicesIcon({ className }) {
+function DesignIcon({ className }) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
-      <path d="M10.5 18.75a.75.75 0 000 1.5h3a.75.75 0 000-1.5h-3z" />
-      <path fillRule="evenodd" d="M8.625.75A3.375 3.375 0 005.25 4.125v15.75a3.375 3.375 0 003.375 3.375h6.75a3.375 3.375 0 003.375-3.375V4.125A3.375 3.375 0 0015.375.75h-6.75zM7.5 4.125C7.5 3.504 8.004 3 8.625 3H9.75v.375c0 .621.504 1.125 1.125 1.125h2.25c.621 0 1.125-.504 1.125-1.125V3h1.125c.621 0 1.125.504 1.125 1.125v15.75c0 .621-.504 1.125-1.125 1.125h-6.75A1.125 1.125 0 017.5 19.875V4.125z" clipRule="evenodd" />
+      <path fillRule="evenodd" d="M20.599 1.5c-.376 0-.743.111-1.055.32l-5.08 3.385a18.747 18.747 0 00-3.471 2.987 10.04 10.04 0 014.815 4.815 18.748 18.748 0 002.987-3.472l3.386-5.079A1.902 1.902 0 0020.599 1.5zm-8.3 14.025a18.76 18.76 0 001.896-1.207 8.026 8.026 0 00-4.513-4.513A18.75 18.75 0 008.475 11.7l-.278.5a5.26 5.26 0 013.601 3.602l.502-.278zM6.75 13.5A3.75 3.75 0 003 17.25a1.5 1.5 0 01-1.601 1.497.75.75 0 00-.7 1.123 5.25 5.25 0 009.8-2.62 3.75 3.75 0 00-3.75-3.75z" clipRule="evenodd" />
     </svg>
   );
 }
 
-function ChartIcon({ className }) {
+function ScanIcon({ className }) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
-      <path fillRule="evenodd" d="M2.25 13.5a8.25 8.25 0 018.25-8.25.75.75 0 01.75.75v6.75H18a.75.75 0 01.75.75 8.25 8.25 0 01-16.5 0z" clipRule="evenodd" />
-      <path fillRule="evenodd" d="M12.75 3a.75.75 0 01.75-.75 8.25 8.25 0 018.25 8.25.75.75 0 01-.75.75h-7.5a.75.75 0 01-.75-.75V3z" clipRule="evenodd" />
+      <path d="M4.5 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM14.25 8.625a3.375 3.375 0 116.75 0 3.375 3.375 0 01-6.75 0zM1.5 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM17.25 19.128l-.001.144a2.25 2.25 0 01-.233.96 10.088 10.088 0 005.06-1.01.75.75 0 00.42-.643 4.875 4.875 0 00-6.957-4.611 8.586 8.586 0 011.71 5.157v.003z" />
+    </svg>
+  );
+}
+
+function AnalyzeIcon({ className }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path fillRule="evenodd" d="M10.5 3.75a6.75 6.75 0 100 13.5 6.75 6.75 0 000-13.5zM2.25 10.5a8.25 8.25 0 1114.59 5.28l4.69 4.69a.75.75 0 11-1.06 1.06l-4.69-4.69A8.25 8.25 0 012.25 10.5z" clipRule="evenodd" />
+    </svg>
+  );
+}
+
+function StrengthIcon({ className }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path fillRule="evenodd" d="M12 6.75a5.25 5.25 0 016.775-5.025.75.75 0 01.313 1.248l-3.32 3.319c.063.475.276.934.641 1.299.365.365.824.578 1.3.64l3.318-3.319a.75.75 0 011.248.313 5.25 5.25 0 01-5.472 6.756c-1.018-.086-1.87.1-2.309.634L7.344 21.3A3.298 3.298 0 112.7 16.657l8.684-7.151c.533-.44.72-1.291.634-2.309A5.342 5.342 0 0112 6.75zM4.117 19.125a.75.75 0 01.75-.75h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75h-.008a.75.75 0 01-.75-.75v-.008z" clipRule="evenodd" />
     </svg>
   );
 }

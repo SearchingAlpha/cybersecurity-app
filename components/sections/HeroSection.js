@@ -37,18 +37,18 @@ export default function HeroSection() {
             </div>
             
             <h1 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
-              <span className="block">SECURITY</span>
-              <span className="block text-[#2DD4BF]">VIBESAFE</span>
+              <span className="block">Secure Your App,</span>
+              <span className="block text-[#2DD4BF]">No Code Required</span>
             </h1>
             
             <p className="mb-8 text-[#6B7280] text-lg">
-              It's a service that provides easy-to-use and confident security testing for solo developers and small startups.
+              You've poured your heart into your app. Don't let vulnerabilities ruin it. VibeSafe makes cybersecurity testing dead simple—scan, spot risks, and fix them fast, even if you've never written a line of code.
             </p>
             
             <div className="mb-8 flex items-center space-x-6">
               <div className="flex items-center">
                 <ShieldCheckIcon className="mr-2 h-5 w-5 text-[#2DD4BF]" />
-                <span className="text-sm">24/7 malware protection</span>
+                <span className="text-sm">Built for Solo Devs & Small Teams</span>
               </div>
             </div>
             

@@ -37,7 +37,7 @@ export default function ButtonWaitlist() {
           onClick={() => setIsExpanded(true)}
           className="relative flex h-12 items-center justify-center rounded-none bg-[#2DD4BF] px-6 text-white transition-all hover:bg-[#2DD4BF]/90 focus:outline-none"
         >
-          <span className="mr-2 text-sm font-medium">Improve your online security with a leading VPN service</span>
+          <span className="mr-2 text-sm font-medium">Try It Free</span>
           <ArrowRightIcon className="h-4 w-4" />
           <div className="absolute -top-1 -left-1 h-2 w-2 border-t border-l border-white"></div>
           <div className="absolute -top-1 -right-1 h-2 w-2 border-t border-r border-white"></div>
@@ -68,7 +68,7 @@ export default function ButtonWaitlist() {
               disabled={isSubmitting || isSuccess}
               className={`relative h-12 rounded-none px-6 text-sm font-medium transition-all focus:outline-none ${
                 isSuccess
-                  ? 'bg-green-500 text-white'
+                  ? 'bg-[#2DD4BF] text-white'
                   : 'bg-[#2DD4BF] text-white hover:bg-[#2DD4BF]/90'
               }`}
             >
@@ -83,7 +83,7 @@ export default function ButtonWaitlist() {
                   <span>Joined!</span>
                 </span>
               ) : (
-                'Get started'
+                'Get Started'
               )}
               <div className="absolute -top-1 -left-1 h-2 w-2 border-t border-l border-white"></div>
               <div className="absolute -top-1 -right-1 h-2 w-2 border-t border-r border-white"></div>
