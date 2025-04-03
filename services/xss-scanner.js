@@ -1,303 +1,162 @@
 // services/xss-scanner.js
 import axios from 'axios';
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio'; // Use named imports with namespace
 
 /**
  * XSS Scanner Service for VibeSafe
- * Analyzes web applications for potential cross-site scripting vulnerabilities
+ * Scans websites and web applications for potential XSS vulnerabilities
  */
 
-/**
- * Scans a website for potential XSS vulnerabilities
- * @param {string} url - The URL to scan
- * @returns {Promise<Object>} - Scan results with vulnerability details
- */
-export async function scanForXss(url) {
+// Function to scan a URL for potential XSS vulnerabilities
+export async function scanForXSS(url) {
   try {
-    // Validate URL format
-    if (!isValidUrl(url)) {
-      throw new Error('Invalid URL format');
-    }
-
-    // Fetch the webpage content
-    const response = await axios.get(url, {
-      headers: {
-        'User-Agent': 'VibeSafe Security Scanner/1.0'
-      },
-      timeout: 15000 // 15 second timeout
-    });
-
-    // Parse HTML content
-    const $ = cheerio.load(response.data);
+    // Fetch the target page
+    const response = await axios.get(url);
+    const html = response.data;
     
-    // Results object
-    const results = {
-      url,
-      timestamp: new Date().toISOString(),
-      vulnerabilities: [],
-      summary: {
-        riskLevel: 'Low',
-        totalVulnerabilities: 0,
-        scannedElements: 0
+    // Load the HTML into cheerio
+    const $ = cheerio.load(html);
+    
+    // Array to store found vulnerabilities
+    const vulnerabilities = [];
+    
+    // Check for input fields that might be vulnerable to XSS
+    const inputFields = $('input, textarea');
+    inputFields.each((index, element) => {
+      const type = $(element).attr('type');
+      const id = $(element).attr('id') || '';
+      const name = $(element).attr('name') || '';
+      
+      // Check if input validation is missing
+      if (!$(element).attr('pattern') && ['text', 'search', 'url', 'email', undefined].includes(type)) {
+        vulnerabilities.push({
+          type: 'Potential XSS Vector',
+          element: `${element.tagName}${id ? '#'+id : ''}${name ? '[name='+name+']' : ''}`,
+          description: 'Input field without pattern validation',
+          risk: 'Medium',
+          remediation: 'Add input validation with pattern attribute or server-side validation'
+        });
       }
-    };
-
-    // Analyze input fields
-    const inputFields = analyzeInputFields($);
-    results.vulnerabilities.push(...inputFields.vulnerabilities);
-    results.summary.scannedElements += inputFields.scannedCount;
+    });
     
-    // Analyze URL parameters
-    const urlParams = analyzeUrlParameters(url);
-    results.vulnerabilities.push(...urlParams.vulnerabilities);
-    results.summary.scannedElements += urlParams.scannedCount;
+    // Check for forms without CSRF protection
+    const forms = $('form');
+    forms.each((index, element) => {
+      const hasCSRFToken = $(element).find('input[name="_token"], input[name="csrf_token"]').length > 0;
+      
+      if (!hasCSRFToken) {
+        vulnerabilities.push({
+          type: 'Missing CSRF Protection',
+          element: `form${$(element).attr('id') ? '#'+$(element).attr('id') : ''}`,
+          description: 'Form without CSRF token',
+          risk: 'High',
+          remediation: 'Add CSRF token to all forms'
+        });
+      }
+    });
     
-    // Analyze form submissions
-    const formAnalysis = analyzeFormSubmissions($);
-    results.vulnerabilities.push(...formAnalysis.vulnerabilities);
-    results.summary.scannedElements += formAnalysis.scannedCount;
-
-    // Update total vulnerabilities count
-    results.summary.totalVulnerabilities = results.vulnerabilities.length;
+    // Check for inline JavaScript that might be vulnerable
+    const inlineScripts = $('script:not([src])');
+    inlineScripts.each((index, element) => {
+      const scriptContent = $(element).html();
+      
+      // Check if the script contains document.write or innerHTML assignments
+      if (scriptContent.includes('document.write') || scriptContent.includes('innerHTML')) {
+        vulnerabilities.push({
+          type: 'Potential XSS Vector',
+          element: 'inline script',
+          description: 'Script uses document.write or innerHTML which can be XSS vectors',
+          risk: 'Medium',
+          remediation: 'Avoid using document.write and innerHTML with user input'
+        });
+      }
+    });
     
-    // Determine risk level based on vulnerabilities found
-    results.summary.riskLevel = calculateRiskLevel(results.vulnerabilities);
+    // Check for user content areas that might be vulnerable
+    const divs = $('div, span, p');
+    divs.each((index, element) => {
+      const className = $(element).attr('class') || '';
+      
+      // Check for elements that likely contain user content
+      if (className.includes('comment') || className.includes('user') || className.includes('content')) {
+        vulnerabilities.push({
+          type: 'Potential XSS Vector',
+          element: `${element.tagName}.${className}`,
+          description: 'Element likely contains user-generated content',
+          risk: 'Low',
+          remediation: 'Ensure content is properly sanitized before rendering'
+        });
+      }
+    });
     
-    return results;
-  } catch (error) {
-    console.error('Scan error:', error);
     return {
       url,
       timestamp: new Date().toISOString(),
-      error: error.message,
-      summary: {
-        riskLevel: 'Unknown',
-        totalVulnerabilities: 0,
-        scannedElements: 0
-      }
+      vulnerabilitiesFound: vulnerabilities.length,
+      vulnerabilities
     };
+  } catch (error) {
+    console.error('Error scanning for XSS:', error);
+    throw new Error(`Failed to scan ${url}: ${error.message}`);
   }
 }
 
-/**
- * Validates URL format
- * @param {string} url - URL to validate
- * @returns {boolean} - Whether URL is valid
- */
-function isValidUrl(url) {
-  try {
-    new URL(url);
-    return true;
-  } catch (err) {
-    return false;
-  }
-}
-
-/**
- * Analyzes all input fields for XSS vulnerabilities
- * @param {CheerioStatic} $ - Cheerio instance with loaded HTML
- * @returns {Object} - Analysis results
- */
-function analyzeInputFields($) {
-  const vulnerabilities = [];
-  const inputs = $('input, textarea');
-  
-  inputs.each((i, el) => {
-    const input = $(el);
-    const type = input.attr('type') || 'text';
-    const id = input.attr('id') || '';
-    const name = input.attr('name') || '';
-    
-    // Check for lack of input validation attributes
-    if (
-      (type === 'text' || type === 'search' || type === 'url' || type === 'textarea') && 
-      !input.attr('pattern') && 
-      !input.attr('maxlength')
-    ) {
-      vulnerabilities.push({
-        type: 'XSS',
-        severity: 'Medium',
-        element: `Input field ${name || id || 'unnamed'}`,
-        description: 'Input field lacks proper validation constraints',
-        location: `Element: ${el.name}${id ? ` #${id}` : ''}${name ? ` [name="${name}"]` : ''}`,
-        recommendation: 'Add input validation with pattern attribute or maxlength constraints'
-      });
-    }
-  });
-
-  return {
-    vulnerabilities,
-    scannedCount: inputs.length
-  };
-}
-
-/**
- * Analyzes URL parameters for potential XSS vectors
- * @param {string} url - URL to analyze
- * @returns {Object} - Analysis results
- */
-function analyzeUrlParameters(url) {
-  const vulnerabilities = [];
-  const parsedUrl = new URL(url);
-  const params = parsedUrl.searchParams;
-  
-  // Count parameters to report even if no vulnerabilities found
-  let paramCount = 0;
-  
-  for (const [name, value] of params.entries()) {
-    paramCount++;
-    
-    // Check for suspicious parameter names that might be used for XSS
-    if (['script', 'html', 'code', 'inject', 'xss'].some(term => name.toLowerCase().includes(term))) {
-      vulnerabilities.push({
-        type: 'XSS',
-        severity: 'High',
-        element: `URL parameter "${name}"`,
-        description: 'Suspicious URL parameter name that might be used for script injection',
-        location: `URL: ${parsedUrl.pathname}?${name}=...`,
-        recommendation: 'Implement server-side validation and sanitization for all URL parameters'
-      });
-    }
-  }
-  
-  return {
-    vulnerabilities,
-    scannedCount: paramCount
-  };
-}
-
-/**
- * Analyzes form submissions for potential XSS vulnerabilities
- * @param {CheerioStatic} $ - Cheerio instance with loaded HTML
- * @returns {Object} - Analysis results
- */
-function analyzeFormSubmissions($) {
-  const vulnerabilities = [];
-  const forms = $('form');
-  
-  forms.each((i, el) => {
-    const form = $(el);
-    const id = form.attr('id') || '';
-    const action = form.attr('action') || '';
-    const method = (form.attr('method') || 'get').toLowerCase();
-    
-    // Forms with GET method are more susceptible to XSS
-    if (method === 'get') {
-      vulnerabilities.push({
-        type: 'XSS',
-        severity: 'Medium',
-        element: `Form ${id || 'unnamed'}`,
-        description: 'Form uses GET method which may expose form data in URL and enable XSS attacks',
-        location: `Form${id ? ` #${id}` : ''}${action ? ` action="${action}"` : ''}`,
-        recommendation: 'Consider using POST method for forms and implement CSRF protection'
-      });
-    }
-    
-    // Check if there's no CSRF protection
-    const hasCSRFToken = form.find('input[name*="csrf"], input[name*="token"]').length > 0;
-    if (!hasCSRFToken) {
-      vulnerabilities.push({
-        type: 'XSS',
-        severity: 'Medium',
-        element: `Form ${id || 'unnamed'}`,
-        description: 'Form lacks CSRF protection which can be combined with XSS for attack escalation',
-        location: `Form${id ? ` #${id}` : ''}${action ? ` action="${action}"` : ''}`,
-        recommendation: 'Implement CSRF tokens for all forms'
-      });
-    }
-  });
-  
-  return {
-    vulnerabilities,
-    scannedCount: forms.length
-  };
-}
-
-/**
- * Calculates risk level based on vulnerabilities
- * @param {Array} vulnerabilities - List of found vulnerabilities
- * @returns {string} - Risk level assessment
- */
-function calculateRiskLevel(vulnerabilities) {
-  const highCount = vulnerabilities.filter(v => v.severity === 'High').length;
-  const mediumCount = vulnerabilities.filter(v => v.severity === 'Medium').length;
-  
-  if (highCount > 0) {
-    return 'High';
-  } else if (mediumCount > 2) {
-    return 'Medium';
-  } else if (mediumCount > 0 || vulnerabilities.length > 0) {
-    return 'Low';
-  }
-  
-  return 'Safe';
-}
-
-/**
- * Generates recommendations to fix XSS vulnerabilities
- * @param {Array} vulnerabilities - List of found vulnerabilities
- * @returns {Array} - List of recommendations
- */
-export function generateXssRecommendations(vulnerabilities) {
-  const recommendations = [
-    {
-      title: 'Sanitize User Input',
-      description: 'Always sanitize user input before displaying it back on pages.',
-      code: `// Example using DOMPurify
-import DOMPurify from 'dompurify';
-
-const userInput = formData.comment;
-const sanitizedInput = DOMPurify.sanitize(userInput);
-document.getElementById('comment').innerHTML = sanitizedInput;`
-    },
-    {
-      title: 'Use Content Security Policy',
-      description: 'Implement Content Security Policy headers to restrict script sources.',
-      code: `// In your Next.js middleware.js
-export function middleware(req) {
-  const response = NextResponse.next();
-  
-  // Add Content Security Policy header
-  response.headers.set(
-    'Content-Security-Policy',
-    "default-src 'self'; script-src 'self'"
-  );
-  
-  return response;
-}`
-    },
-    {
-      title: 'Use React\'s JSX',
-      description: 'React\'s JSX automatically escapes values by default.',
-      code: `// Safe - React escapes this automatically
-function Comment({ userData }) {
-  return <div>{userData.comment}</div>;
-}
-
-// Unsafe - Never do this
-function UnsafeComment({ userData }) {
-  return <div dangerouslySetInnerHTML={{ __html: userData.comment }} />;
-}`
-    }
+// Function to check if a specific string is vulnerable to XSS
+export function testInputForXSS(input) {
+  // Common XSS patterns to check against
+  const xssPatterns = [
+    /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
+    /javascript\s*:/gi,
+    /onerror\s*=/gi,
+    /onload\s*=/gi,
+    /onclick\s*=/gi,
+    /alert\s*\(/gi,
+    /eval\s*\(/gi
   ];
   
-  // Add specific recommendations based on found vulnerabilities
-  if (vulnerabilities.some(v => v.element.includes('form'))) {
-    recommendations.push({
-      title: 'Validate Form Inputs',
-      description: 'Add validation to all form inputs on both client and server side.',
-      code: `// Client-side validation example
-function validateForm() {
-  const input = document.getElementById('userInput').value;
-  const pattern = /^[a-zA-Z0-9 .,!?'-]+$/;
-  
-  if (!pattern.test(input)) {
-    showError('Please use only alphanumeric characters and basic punctuation.');
-    return false;
+  // Check if input matches any XSS patterns
+  for (const pattern of xssPatterns) {
+    if (pattern.test(input)) {
+      return {
+        vulnerable: true,
+        pattern: pattern.toString(),
+        suggestion: 'This input may contain malicious JavaScript code'
+      };
+    }
   }
   
-  return true;
-}`
+  return {
+    vulnerable: false
+  };
+}
+
+// Generate security recommendations based on scan results
+export function generateXSSRecommendations(scanResults) {
+  const recommendations = [];
+  
+  if (scanResults.vulnerabilitiesFound > 0) {
+    recommendations.push({
+      title: 'Implement Content Security Policy (CSP)',
+      description: 'CSP helps prevent XSS attacks by specifying which dynamic resources are allowed to load',
+      implementation: "Add the following header: Content-Security-Policy: default-src 'self'; script-src 'self'"
+    });
+    
+    recommendations.push({
+      title: 'Use HttpOnly and Secure Cookies',
+      description: 'Prevent JavaScript from accessing cookies and ensure they are only transmitted over HTTPS',
+      implementation: 'Set HttpOnly and Secure flags on all sensitive cookies'
+    });
+    
+    recommendations.push({
+      title: 'Implement Input Validation',
+      description: 'Validate all user inputs both client-side and server-side',
+      implementation: 'Use a library like validator.js to sanitize and validate user inputs'
+    });
+    
+    recommendations.push({
+      title: 'Use HTML Encoding',
+      description: 'Encode all dynamic content before rendering it in the browser',
+      implementation: 'Use functions like DOMPurify.sanitize() to sanitize HTML content'
     });
   }
   
